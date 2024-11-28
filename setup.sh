@@ -105,7 +105,7 @@ install_package() {
     fi
 }
 
-# Main
+##! Main !##
 clear
 stty -echo
 echo "============== Vega =============="
