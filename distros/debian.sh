@@ -11,7 +11,7 @@ if [ ! -f "/tmp/vegaup/lib/utility.sh" ]; then
     mkdir -p /tmp/vegaup/lib
     curl -fsSL https://raw.githubusercontent.com/VegaUp/VegaUp/main/lib/utility.sh -o "/tmp/vegaup/lib/utility.sh" >/dev/null 2>&1
 fi
-source "/tmp/vegaup/lib/utility.sh"
+. "/tmp/vegaup/lib/utility.sh"
 
 ##! Main Entrypoint !##
 clear
