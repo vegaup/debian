@@ -2,6 +2,12 @@
 
 A comprehensive setup script for Debian-based Linux distributions that installs and configures essential development tools and applications.
 
+## Run
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/vegaup/debian-based/refs/heads/main/setup.sh | bash
+```
+
 ## Prerequisites
 
 - Debian-based Linux distribution (e.g., Debian, Ubuntu)
@@ -21,8 +27,8 @@ A comprehensive setup script for Debian-based Linux distributions that installs 
 
 ### Development Tools
 - JetBrains Toolbox
-- OpenJDK (Temurin 21)
-- Python 3 (with symbolic link)
+- OpenJDK
+   - Temurin 21
 - Lua 5.4
 - Clang
 - pkg-config
@@ -31,7 +37,8 @@ A comprehensive setup script for Debian-based Linux distributions that installs 
 - Spotify
 - Steam
 - Thunderbird
-- Discord (with Vencord)
+- Discord
+   - Vencord (WIP)
 - OBS Studio
 - GNOME Boxes (Virtualization)
 
