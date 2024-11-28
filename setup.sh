@@ -24,11 +24,10 @@ declare -A packages=(
     ["Lua 5.4"]=false
     ["Fast Node Manager"]=false
     ["Zig"]=false
-    ["Orion File Utilities"]=false
 )
 
 order=("Librewolf" "Jetbrains Toolbox" "Discord" "Steam" "Thunderbird" "Spotify" "OBS" "GNOME Boxes"
-    "Temurin 21" "Clang" "PKG Config" "Lua 5.4" "Fast Node Manager" "Zig" "Orion File Utilities")
+    "Temurin 21" "Clang" "PKG Config" "Lua 5.4" "Fast Node Manager" "Zig")
 
 error_count=0
 declare -A error_log
@@ -89,7 +88,7 @@ ask_install() {
     local package="$1"
     echo "Do you want to install $package? (y/n)"
     read -r response
-    if [ "$response" = "y" ]; then
+    if [[ "$response" = [Yy] ]]; then
         packages["$package"]=true
     fi
 }
@@ -120,21 +119,10 @@ stty echo
 
 # Ask for package installation
 for pkg in "${order[@]}"; do
-    if [ "$pkg" == "Orion File Utilities" ]; then
-        # Skip Orion File Utilities in main loop since we'll ask about it after Zig
-        continue
-    fi
-    
     ask_install "$pkg"
 
-    # Ask about Vencord if Discord was selected
     if [[ "$pkg" == "Discord" && "${packages["Discord"]}" == true ]]; then
         ask_install "Vencord"
-    fi
-
-    # Ask about Orion File Utilities if Zig was selected
-    if [[ "$pkg" == "Zig" && "${packages["Zig"]}" == true ]]; then
-        ask_install "Orion File Utilities"
     fi
 done
 
@@ -176,6 +164,12 @@ else
     print_result false "Flatpak installation failed" 2 "$error_output"
 fi
 
+if error_output=$(apt-get install snapd 2>&1 >/dev/null); then
+    print_result true "Snap installed" 2
+else
+    print_result false "Snap installation failed" 2 "$error_output"
+fi
+
 print_progress "Installing Development Tools" 1
 
 if [ "${packages["Clang"]}" = true ]; then
@@ -215,23 +209,6 @@ fi
 
 if [ "${packages["Zig"]}" = true ]; then
     install_package "Zig" "snap install --beta --classic zig"
-fi
-
-if [ "${packages["Orion File Utilities"]}" = true ]; then
-    if [ ! -d "/opt" ]; then
-        mkdir -p /opt >/dev/null 2>&1
-    fi
-    if [ ! -d "/usr/local/bin" ]; then
-        mkdir -p /usr/local/bin >/dev/null 2>&1
-    fi
-
-    cd /opt >/dev/null 2>&1
-    if [ -d "/opt/Orion" ]; then
-        rm -rf /opt/Orion >/dev/null 2>&1
-    fi
-    git clone https://github.com/Thoq-jar/Orion.git >/dev/null 2>&1
-    cd Orion >/dev/null 2>&1
-    install_package "Orion File Utilities" "zig build --release=safe && ln -sf /opt/Orion/zig-out/bin/orion /usr/local/bin/orion"
 fi
 
 print_progress "Installing Applications" 1
