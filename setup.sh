@@ -138,6 +138,7 @@ for pkg in "${order[@]}"; do
     fi
 done
 
+##! Entry Point !##
 clear
 stty -echo
 echo "============== Vega =============="
