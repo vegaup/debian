@@ -5,7 +5,7 @@ A comprehensive setup script for Debian-based Linux distributions that installs 
 ## Run
 
 ```bash
-sudo bash -c "$(curl -sS https://raw.githubusercontent.com/vegaup/debian-based/refs/heads/main/setup.sh)"
+sudo -E bash -c "$(curl -sS https://raw.githubusercontent.com/vegaup/debian-based/refs/heads/main/setup.sh)"
 ```
 
 ## Prerequisites
@@ -51,7 +51,7 @@ sudo bash -c "$(curl -sS https://raw.githubusercontent.com/vegaup/debian-based/r
    ```
 3. Run the script:
    ```bash
-   ./setup.sh
+   sudo -E bash ./setup.sh
    ```
 
 ⚠️ **Note**: The script requires root privileges and will prompt for your password.
