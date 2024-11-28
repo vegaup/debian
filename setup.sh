@@ -105,7 +105,7 @@ install_package() {
     fi
 }
 
-# Main
+##! Main !##
 clear
 stty -echo
 echo "============== Vega =============="
@@ -126,6 +126,7 @@ for pkg in "${order[@]}"; do
     fi
 done
 
+##! Entry Point !##
 clear
 stty -echo
 echo "============== Vega =============="
@@ -161,6 +162,12 @@ if error_output=$(apt install -y flatpak plasma-discover-backend-flatpak 2>&1 >/
     fi
 else
     print_result false "Flatpak installation failed" 2 "$error_output"
+fi
+
+if error_output=$(apt-get install snapd 2>&1 >/dev/null); then
+    print_result true "Snap installed" 2
+else
+    print_result false "Snap installation failed" 2 "$error_output"
 fi
 
 print_progress "Installing Development Tools" 1
