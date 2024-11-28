@@ -75,6 +75,7 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+stty -echo
 echo "============== Vega =============="
 echo "====== Authors: VegaUp Team ======"
 echo "====== Debian Autoconfigure ======"
@@ -82,6 +83,7 @@ echo "====== Debian Autoconfigure ======"
 echo ""
 echo "Starting in 5 seconds..."
 sleep 5
+stty echo
 
 echo "Do you want to install LibreWolf? (y/n)"
 read -r librewolf
