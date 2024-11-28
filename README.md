@@ -5,7 +5,7 @@ A comprehensive setup script for Debian-based Linux distributions that installs 
 ## Run
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/vegaup/debian-based/refs/heads/main/setup.sh | sudo bash
+sudo bash -c "$(curl -sS https://raw.githubusercontent.com/vegaup/debian-based/refs/heads/main/setup.sh)"
 ```
 
 ## Prerequisites
