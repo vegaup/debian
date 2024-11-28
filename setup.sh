@@ -23,10 +23,12 @@ declare -A packages=(
     ["PKG Config"]=false
     ["Lua 5.4"]=false
     ["Fast Node Manager"]=false
+    ["Zig"]=false
+    ["Orion File Utilities"]=false
 )
 
 order=("Librewolf" "Jetbrains Toolbox" "Discord" "Steam" "Thunderbird" "Spotify" "OBS" "GNOME Boxes"
-        "Temurin 21" "Clang" "PKG Config" "Lua 5.4", "Fast Node Manager")
+    "Temurin 21" "Clang" "PKG Config" "Lua 5.4" "Fast Node Manager" "Zig" "Orion File Utilities")
 
 error_count=0
 declare -A error_log
@@ -36,7 +38,7 @@ print_progress() {
     local message="$1"
     local depth="$2"
 
-    for ((i=0; i<depth-1; i++)); do
+    for ((i = 0; i < depth - 1; i++)); do
         echo -n "    │"
     done
 
@@ -54,7 +56,7 @@ print_result() {
     local depth="$3"
     local error_output="$4"
 
-    for ((i=0; i<depth-1; i++)); do
+    for ((i = 0; i < depth - 1; i++)); do
         echo -n "    │"
     done
 
@@ -118,13 +120,23 @@ stty echo
 
 # Ask for package installation
 for pkg in "${order[@]}"; do
+    if [ "$pkg" == "Orion File Utilities" ]; then
+        # Skip Orion File Utilities in main loop since we'll ask about it after Zig
+        continue
+    fi
+    
     ask_install "$pkg"
 
+    # Ask about Vencord if Discord was selected
     if [[ "$pkg" == "Discord" && "${packages["Discord"]}" == true ]]; then
         ask_install "Vencord"
     fi
-done
 
+    # Ask about Orion File Utilities if Zig was selected
+    if [[ "$pkg" == "Zig" && "${packages["Zig"]}" == true ]]; then
+        ask_install "Orion File Utilities"
+    fi
+done
 
 clear
 stty -echo
@@ -136,7 +148,7 @@ echo ""
 print_progress "VegaUp Installation Starting" 0
 print_progress "Installing System Updates" 1
 
-if apt update > /dev/null 2>&1 && apt upgrade -y > /dev/null 2>&1; then
+if apt update >/dev/null 2>&1 && apt upgrade -y >/dev/null 2>&1; then
     print_result true "System packages updated" 1
 else
     print_result false "System packages update failed" 1
@@ -144,7 +156,7 @@ fi
 
 print_progress "Installing Core Dependencies" 1
 
-if apt-get install -y extrepo snapd make > /dev/null 2>&1; then
+if apt-get install -y extrepo snapd make >/dev/null 2>&1; then
     print_result true "Core dependencies installed" 1
 else
     print_result false "Core dependencies installation failed" 1
@@ -198,6 +210,27 @@ if [ "${packages["Fast Node Manager"]}" = true ]; then
         sudo -u $SUDO_USER bash -c 'curl -fsSL https://fnm.vercel.app/install | bash && source $HOME/.bashrc'
         wait $1
     "
+fi
+
+if [ "${packages["Zig"]}" = true ]; then
+    install_package "Zig" "snap install --beta --classic zig"
+fi
+
+if [ "${packages["Orion File Utilities"]}" = true ]; then
+    if [ ! -d "/opt" ]; then
+        mkdir -p /opt >/dev/null 2>&1
+    fi
+    if [ ! -d "/usr/local/bin" ]; then
+        mkdir -p /usr/local/bin >/dev/null 2>&1
+    fi
+
+    cd /opt >/dev/null 2>&1
+    if [ -d "/opt/Orion" ]; then
+        rm -rf /opt/Orion >/dev/null 2>&1
+    fi
+    git clone https://github.com/Thoq-jar/Orion.git >/dev/null 2>&1
+    cd Orion >/dev/null 2>&1
+    install_package "Orion File Utilities" "zig build --release=safe && ln -sf /opt/Orion/zig-out/bin/orion /usr/local/bin/orion"
 fi
 
 print_progress "Installing Applications" 1
