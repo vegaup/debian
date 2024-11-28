@@ -70,7 +70,7 @@ The script includes updates for:
 
 ## License
 
-[Add your license information here]
+[MIT](LICENSE.md)
 
 ## Contributing
 
