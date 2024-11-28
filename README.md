@@ -73,7 +73,6 @@ The script includes updates for:
 
 - Python is symbolically linked so `python` command points to `python3`
 - Java (OpenJDK 21) is installed in `/opt/java/` with binaries linked to `/usr/local/bin/`
-- Vencord is automatically installed over Discord for enhanced functionality
 
 ## License
 
