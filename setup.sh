@@ -19,11 +19,11 @@ declare -A error_log
 print_progress() {
     local message="$1"
     local depth="$2"
-    
+
     for ((i=0; i<depth-1; i++)); do
         echo -n "    │"
     done
-    
+
     if [ "$depth" -eq 0 ]; then
         echo -n "[/] "
     else
@@ -37,11 +37,11 @@ print_result() {
     local message="$2"
     local depth="$3"
     local error_output="$4"
-    
+
     for ((i=0; i<depth-1; i++)); do
         echo -n "    │"
     done
-    
+
     if [ "$depth" -eq 0 ]; then
         if [ "$success" = true ]; then
             echo -n "[+] "
@@ -67,15 +67,6 @@ print_result() {
     echo "$message"
 }
 
-setup_input_trap() {
-    saved_tty_settings=$(stty -g)
-    stty -echo -icanon
-}
-
-restore_input() {
-    stty "$saved_tty_settings"
-}
-
 clear
 
 if [ "$(id -u)" != "0" ]; then
@@ -92,122 +83,98 @@ echo ""
 echo "Starting in 5 seconds..."
 sleep 5
 
-setup_input_trap
-
 echo "Do you want to install LibreWolf? (y/n)"
-stty echo
 read -r librewolf
-stty -echo
 
 if [ "$librewolf" = "y" ]; then
     librewolf=true
 fi
 
 echo "Do you want to install JetBrains Toolbox? (y/n)"
-stty echo
 read -r jetbrains_toolbox
-stty -echo
 
 if [ "$jetbrains_toolbox" = "y" ]; then
     jetbrains_toolbox=true
 fi
 
 echo "Do you want to install Temurin 21? (y/n)"
-stty echo
 read -r temurin
-stty -echo
 
 if [ "$temurin" = "y" ]; then
     temurin=true
 fi
 
 echo "Do you want to install Clang? (y/n)"
-stty echo
 read -r clang
-stty -echo
 
 if [ "$clang" = "y" ]; then
     clang=true
 fi
 
 echo "Do you want to install pkg-config? (y/n)"
-stty echo
 read -r pkg_config
-stty -echo
 
 if [ "$pkg_config" = "y" ]; then
     pkg_config=true
 fi
 
 echo "Do you want to install Lua 5.4? (y/n)"
-stty echo
 read -r lua
-stty -echo
 
 if [ "$lua" = "y" ]; then
     lua=true
 fi
 
 echo "Do you want to install Spotify? (y/n)"
-stty echo
 read -r spotify
-stty -echo
 
 if [ "$spotify" = "y" ]; then
     spotify=true
 fi
 
 echo "Do you want to install Steam? (y/n)"
-stty echo
 read -r steam
-stty -echo
 
 if [ "$steam" = "y" ]; then
     steam=true
 fi
 
 echo "Do you want to install Thunderbird? (y/n)"
-stty echo
 read -r thunderbird
-stty -echo
 
 if [ "$thunderbird" = "y" ]; then
     thunderbird=true
 fi
 
 echo "Do you want to install Discord? (y/n)"
-stty echo
 read -r discord
-stty -echo
 
 if [ "$discord" = "y" ]; then
     discord=true
     # echo "Do you want to install Vencord? (y/n)"
-    # stty echo
+    #
     # read -r vencord
-    # stty -echo
+    #
     # if [ "$vencord" = "y" ]; then
     #     vencord=true
     # fi
 fi
 
 echo "Do you want to install OBS Studio? (y/n)"
-stty echo
 read -r obs
-stty -echo
 
 if [ "$obs" = "y" ]; then
     obs=true
 fi
 
 echo "Do you want to install GNOME Boxes? (y/n)"
-stty echo
 read -r boxes
-stty -echo
 
 if [ "$boxes" = "y" ]; then
     boxes=true
 fi
+
+stty -echo
 
 clear
 echo "============== Vega =============="
@@ -393,7 +360,7 @@ else
 fi
 
 print_result true "Installation Complete" 0
-restore_input
+stty echo
 
 if [ $error_count -gt 0 ]; then
     echo ""
