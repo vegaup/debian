@@ -26,7 +26,7 @@ declare -A packages=(
 )
 
 order=("Librewolf" "Jetbrains Toolbox" "Discord" "Steam" "Thunderbird" "Spotify" "OBS" "GNOME Boxes"
-        "Temurin 21" "Clang" "PKG Config" "Lua 5.4")
+        "Temurin 21" "Clang" "PKG Config" "Lua 5.4", "Node.js v22.11")
 
 error_count=0
 declare -A error_log
