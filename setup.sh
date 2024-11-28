@@ -172,10 +172,18 @@ if [ "${packages["Lua 5.4"]}" = true ]; then
 fi
 
 if [ "${packages["Temurin 21"]}" = true ]; then
+    if [ ! -d "/opt/java" ]; then
+        mkdir /opt/java
+    fi
+    
     install_package "Temurin 21" "wget -q https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz -P /tmp/ && tar -xvzf /tmp/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz -C /opt/java/ && ln -sf /opt/java/jdk-21.0.5+11/bin/* /usr/local/bin/"
 fi
 
 if [ "${packages["Jetbrains Toolbox"]}" = true ]; then
+    if [ ! -d "/opt" ]; then
+        mkdir /opt
+    fi
+    
     install_package "JetBrains Toolbox" "wget -q https://download.jetbrains.com/toolbox/jetbrains-toolbox-2.5.2.35332.tar.gz -P /tmp/ && tar -xvzf /tmp/jetbrains-toolbox-2.5.2.35332.tar.gz -C /opt/ && ln -sf /opt/jetbrains-toolbox-2.5.2.35332/jetbrains-toolbox /usr/local/bin/jetbrains-toolbox"
 fi
 
