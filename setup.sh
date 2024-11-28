@@ -152,7 +152,7 @@ fi
 
 print_progress "Setting up Package Managers" 1
 
-if error_output=$(apt install -y wget flatpak plasma-discover-backend-flatpak 2>&1 >/dev/null); then
+if error_output=$(apt install -y flatpak plasma-discover-backend-flatpak 2>&1 >/dev/null); then
     print_result true "Flatpak installed" 2
     if error_output=$(flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo 2>&1 >/dev/null); then
         print_result true "Flathub repository added" 2
@@ -182,7 +182,7 @@ if [ "${packages["Temurin 21"]}" = true ]; then
         mkdir /opt/java
     fi
 
-    install_package "Temurin 21" "wget -q https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz -P /tmp/ && tar -xvzf /tmp/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz -C /opt/java/ && ln -sf /opt/java/jdk-21.0.5+11/bin/* /usr/local/bin/"
+    install_package "Temurin 21" "curl -L -o /tmp/temurin21.tar.gz https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz && tar -xvzf /tmp/temurin21.tar.gz -C /opt/java/ && ln -sf /opt/java/jdk-21.0.5+11/bin/* /usr/local/bin/"
 fi
 
 if [ "${packages["Jetbrains Toolbox"]}" = true ]; then
@@ -190,7 +190,7 @@ if [ "${packages["Jetbrains Toolbox"]}" = true ]; then
         mkdir /opt
     fi
 
-    install_package "JetBrains Toolbox" "wget -q https://download.jetbrains.com/toolbox/jetbrains-toolbox-2.5.2.35332.tar.gz -P /tmp/ && tar -xvzf /tmp/jetbrains-toolbox-2.5.2.35332.tar.gz -C /opt/ && ln -sf /opt/jetbrains-toolbox-2.5.2.35332/jetbrains-toolbox /usr/local/bin/jetbrains-toolbox"
+    install_package "JetBrains Toolbox" "curl -L -o /tmp/jetbrains-toolbox.tar.gz https://download.jetbrains.com/toolbox/jetbrains-toolbox-2.5.2.35332.tar.gz && tar -xvzf /tmp/jetbrains-toolbox.tar.gz -C /opt/ && ln -sf /opt/jetbrains-toolbox-2.5.2.35332/jetbrains-toolbox /usr/local/bin/jetbrains-toolbox"
 fi
 
 if [ "${packages["Fast Node Manager"]}" = true ]; then
