@@ -1,132 +1,19 @@
 #!/bin/bash
 
+# Check for sudo/root access
 if [ "$(id -u)" != "0" ]; then
     echo "This script must be run as root. Exiting installation."
     exit 1
 fi
 
-# Variables
-declare -A packages=(
-    # Applications
-    ["Librewolf"]=false
-    ["Jetbrains Toolbox"]=false
-    ["Discord"]=false
-    ["Steam"]=false
-    ["Thunderbird"]=false
-    ["Spotify"]=false
-    ["OBS"]=false
-    ["GNOME Boxes"]=false
+# Load VegaUp Library
+if [ ! -f "/tmp/vegaup/lib/utility.sh" ]; then
+    mkdir -p /tmp/vegaup/lib
+    curl -fsSL https://raw.githubusercontent.com/VegaUp/VegaUp/main/lib/utility.sh -o "/tmp/vegaup/lib/utility.sh" >/dev/null 2>&1
+fi
+source "/tmp/vegaup/lib/utility.sh"
 
-    # Devtools
-    ["Temurin 21"]=false
-    ["Clang"]=false
-    ["PKG Config"]=false
-    ["Lua 5.4"]=false
-    ["Fast Node Manager"]=false
-    ["Zig"]=false
-)
-
-order=("Librewolf" "Jetbrains Toolbox" "Discord" "Steam" "Thunderbird" "Spotify" "OBS" "GNOME Boxes"
-    "Temurin 21" "Clang" "PKG Config" "Lua 5.4" "Fast Node Manager" "Zig")
-
-error_count=0
-declare -A error_log
-
-# Utility Functions
-print_progress() {
-    local message="$1"
-    local depth="$2"
-
-    for ((i = 0; i < depth - 1; i++)); do
-        echo -n "    │"
-    done
-
-    if [ "$depth" -eq 0 ]; then
-        echo -n "[/] "
-    else
-        echo -n "    ├── [*] "
-    fi
-    echo "$message"
-}
-
-print_result() {
-    local success="$1"
-    local message="$2"
-    local depth="$3"
-    local error_output="$4"
-
-    for ((i = 0; i < depth - 1; i++)); do
-        echo -n "    │"
-    done
-
-    if [ "$depth" -eq 0 ]; then
-        if [ "$success" = true ]; then
-            echo -n "[+] "
-        else
-            echo -n "[-] "
-            ((error_count++))
-            error_log["$message"]="$error_output"
-        fi
-    else
-        if [ "$depth" -gt 2 ]; then
-            echo -n "    └── "
-        else
-            echo -n "    ├── "
-        fi
-        if [ "$success" = true ]; then
-            echo -n "[+] "
-        else
-            echo -n "[-] "
-            ((error_count++))
-            error_log["$message"]="$error_output"
-        fi
-    fi
-    echo "$message"
-}
-
-ask_install() {
-    local package="$1"
-    echo "Do you want to install $package? (y/n)"
-    read -r response
-    if [[ "$response" = [Yy] ]]; then
-        packages["$package"]=true
-    fi
-}
-
-install_package() {
-    local pkg_name="$1"
-    local install_cmd="$2"
-    print_progress "Installing $pkg_name" 2
-    error_output=$(eval "$install_cmd" 2>&1 >/dev/null)
-    if [ $? -eq 0 ]; then
-        print_result true "$pkg_name installed" 2
-    else
-        print_result false "$pkg_name installation failed" 2 "$error_output"
-    fi
-}
-
-##! Main !##
-clear
-stty -echo
-echo "============== Vega =============="
-echo "====== Authors: VegaUp Team ======"
-echo "====== Debian Autoconfigure ======"
-echo ""
-
-echo "Starting in 3 seconds..."
-sleep 3
-stty echo
-
-# Ask for package installation
-for pkg in "${order[@]}"; do
-    ask_install "$pkg"
-
-    if [[ "$pkg" == "Discord" && "${packages["Discord"]}" == true ]]; then
-        ask_install "Vencord"
-    fi
-done
-
-##! Entry Point !##
+##! Main Entrypoint !##
 clear
 stty -echo
 echo "============== Vega =============="
@@ -296,6 +183,7 @@ if [ $error_count -gt 0 ]; then
     fi
 fi
 
+rm -rf /tmp/vegaup
 echo "System reboot required to complete setup. Press Enter to reboot..."
 read -r
 reboot
