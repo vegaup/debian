@@ -138,7 +138,7 @@ fi
 
 print_progress "Installing Core Dependencies" 1
 
-if apt-get install -y curl extrepo snapd make > /dev/null 2>&1; then
+if apt-get install -y extrepo snapd make > /dev/null 2>&1; then
     print_result true "Core dependencies installed" 1
 else
     print_result false "Core dependencies installation failed" 1
