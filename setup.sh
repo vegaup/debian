@@ -22,11 +22,11 @@ declare -A packages=(
     ["Clang"]=false
     ["PKG Config"]=false
     ["Lua 5.4"]=false
-    ["Node.js v22.11"]=false
+    ["Fast Node Manager"]=false
 )
 
 order=("Librewolf" "Jetbrains Toolbox" "Discord" "Steam" "Thunderbird" "Spotify" "OBS" "GNOME Boxes"
-        "Temurin 21" "Clang" "PKG Config" "Lua 5.4", "Node.js v22.11")
+        "Temurin 21" "Clang" "PKG Config" "Lua 5.4", "Fast Node Manager")
 
 error_count=0
 declare -A error_log
@@ -188,9 +188,9 @@ if [ "${packages["Jetbrains Toolbox"]}" = true ]; then
     install_package "JetBrains Toolbox" "wget -q https://download.jetbrains.com/toolbox/jetbrains-toolbox-2.5.2.35332.tar.gz -P /tmp/ && tar -xvzf /tmp/jetbrains-toolbox-2.5.2.35332.tar.gz -C /opt/ && ln -sf /opt/jetbrains-toolbox-2.5.2.35332/jetbrains-toolbox /usr/local/bin/jetbrains-toolbox"
 fi
 
-if [ "${packages["Node.js v22.11"]}" = true ]; then
-    install_package "Node.js v22.11" "
-        sudo -u $SUDO_USER bash -c 'curl -fsSL https://fnm.vercel.app/install | bash && source $HOME/.bashrc && fnm use --install-if-missing 22'
+if [ "${packages["Fast Node Manager"]}" = true ]; then
+    install_package "Fast Node Manager" "
+        sudo -u $SUDO_USER bash -c 'curl -fsSL https://fnm.vercel.app/install | bash && source $HOME/.bashrc'
         wait $1
     "
 fi
