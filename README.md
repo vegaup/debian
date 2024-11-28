@@ -38,7 +38,7 @@ sudo -E bash -c "$(curl -sS https://raw.githubusercontent.com/vegaup/debian-base
 - Steam
 - Thunderbird
 - Discord
-   - Vencord (WIP)
+   - Vencord (Requires konsole)
 - OBS Studio
 - GNOME Boxes (Virtualization)
 
