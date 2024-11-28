@@ -190,9 +190,7 @@ fi
 
 if [ "${packages["Node.js v22.11"]}" = true ]; then
     install_package "Node.js v22.11" "
-        curl -fsSL https://fnm.vercel.app/install | bash
-        source \"$HOME/.bashrc\"
-        su - $USER -c \"fnm use --install-if-missing 22\"
+        sudo -u $USER bash -c 'curl -fsSL https://fnm.vercel.app/install | bash && source $HOME/.bashrc && fnm use --install-if-missing 22'
         wait $1
     "
 fi
