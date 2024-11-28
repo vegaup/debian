@@ -163,6 +163,12 @@ else
     print_result false "Flatpak installation failed" 2 "$error_output"
 fi
 
+if error_output=$(apt-get install snapd 2>&1 >/dev/null); then
+    print_result true "Snap installed" 2
+else
+    print_result false "Snap installation failed" 2 "$error_output"
+fi
+
 print_progress "Installing Development Tools" 1
 
 if [ "${packages["Clang"]}" = true ]; then
