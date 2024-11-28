@@ -119,7 +119,12 @@ stty echo
 # Ask for package installation
 for pkg in "${order[@]}"; do
     ask_install "$pkg"
+
+    if [[ "$pkg" == "Discord" && "${packages["Discord"]}" == true ]]; then
+        ask_install "Vencord"
+    fi
 done
+
 
 clear
 stty -echo
@@ -215,6 +220,15 @@ fi
 
 if [ "${packages["Discord"]}" = true ]; then
     install_package "Discord" "flatpak install -y flathub com.discordapp.Discord"
+
+    if [ "${packages["Vencord"]}" = true ]; then
+        # TODO: Handle errors and make it auto-close console whenever vencord installation is done.
+        install_package "Vencord" "sudo -u $SUDO_USER bash -c 'if command -v konsole &>/dev/null; then
+                konsole --hold -e sh -c \"curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh > /tmp/vencord_installer.sh && \
+                bash /tmp/vencord_installer.sh && \
+                rm /tmp/vencord_installer.sh\";
+            fi'"
+    fi
 fi
 
 if [ "${packages["OBS"]}" = true ]; then
