@@ -146,7 +146,7 @@ fi
 
 print_progress "Setting up Package Managers" 1
 
-if error_output=$(apt install -y flatpak plasma-discover-backend-flatpak 2>&1 >/dev/null); then
+if error_output=$(apt install -y wget flatpak plasma-discover-backend-flatpak 2>&1 >/dev/null); then
     print_result true "Flatpak installed" 2
     if error_output=$(flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo 2>&1 >/dev/null); then
         print_result true "Flathub repository added" 2
