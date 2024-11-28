@@ -9,7 +9,6 @@ apt update && apt upgrade -y
 echo "Installing dependencies..."
 apt-get install -y curl extrepo snapd make clang pkg-config
 
-
 echo "Installing Flatpak and Plasma Discover Backend..."
 apt install -y flatpak plasma-discover-backend-flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -51,6 +50,7 @@ tar -xvzf /tmp/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz -C /opt/java/
 for bin_file in /opt/java/jdk-21.0.5+11/bin/*; do
     ln -sf "$bin_file" /usr/local/bin/
 done
+rm /tmp/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz
 
 echo "Adding symbolic link for python3..."
 ln -sf /usr/local/bin/python3 /usr/local/bin/python
