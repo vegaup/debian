@@ -22,10 +22,11 @@ declare -A packages=(
     ["Clang"]=false
     ["PKG Config"]=false
     ["Lua 5.4"]=false
+    ["Fast Node Manager"]=false
 )
 
 order=("Librewolf" "Jetbrains Toolbox" "Discord" "Steam" "Thunderbird" "Spotify" "OBS" "GNOME Boxes"
-        "Temurin 21" "Clang" "PKG Config" "Lua 5.4")
+        "Temurin 21" "Clang" "PKG Config" "Lua 5.4", "Fast Node Manager")
 
 error_count=0
 declare -A error_log
@@ -175,7 +176,7 @@ if [ "${packages["Temurin 21"]}" = true ]; then
     if [ ! -d "/opt/java" ]; then
         mkdir /opt/java
     fi
-    
+
     install_package "Temurin 21" "wget -q https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5%2B11/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz -P /tmp/ && tar -xvzf /tmp/OpenJDK21U-jdk_x64_linux_hotspot_21.0.5_11.tar.gz -C /opt/java/ && ln -sf /opt/java/jdk-21.0.5+11/bin/* /usr/local/bin/"
 fi
 
@@ -183,8 +184,15 @@ if [ "${packages["Jetbrains Toolbox"]}" = true ]; then
     if [ ! -d "/opt" ]; then
         mkdir /opt
     fi
-    
+
     install_package "JetBrains Toolbox" "wget -q https://download.jetbrains.com/toolbox/jetbrains-toolbox-2.5.2.35332.tar.gz -P /tmp/ && tar -xvzf /tmp/jetbrains-toolbox-2.5.2.35332.tar.gz -C /opt/ && ln -sf /opt/jetbrains-toolbox-2.5.2.35332/jetbrains-toolbox /usr/local/bin/jetbrains-toolbox"
+fi
+
+if [ "${packages["Fast Node Manager"]}" = true ]; then
+    install_package "Fast Node Manager" "
+        sudo -u $SUDO_USER bash -c 'curl -fsSL https://fnm.vercel.app/install | bash && source $HOME/.bashrc'
+        wait $1
+    "
 fi
 
 print_progress "Installing Applications" 1
